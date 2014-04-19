@@ -1,0 +1,16 @@
+﻿@using Octokit
+@model IEnumerable<Emoji>
+
+@{
+    ViewBag.Title = "Emojis";
+    
+}
+
+<h1>Emojis</h1>
+
+<div>
+    @foreach (var emoji in Model) {
+        <span><img src="@emoji.Url" /> @emoji.Name</span>
+    }
+</div>
+

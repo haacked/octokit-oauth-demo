@@ -1,0 +1,14 @@
+﻿@model OctokitDemo.Models.IndexViewModel
+
+@{
+    ViewBag.Title = "Repositories";
+}
+
+<div>
+    <h1>My Repositories</h1>
+    <ul>
+        @foreach (var repository in Model.Repositories) {
+            <li><a href="@repository.HtmlUrl">@repository.FullName</a></li>
+        }
+    </ul>
+</div>
