@@ -17,11 +17,14 @@ namespace OctokitDemo.Controllers
         {
             if (!String.IsNullOrEmpty(code))
             {
-                // TODO: Validate "state". This is like an anti-forgery token.
+                var expectedState = Session["CSRF:State"] as string;
+                if (state != expectedState) throw new InvalidOperationException("SECURITY FAIL!");
+
+                Session["CSRF:State"] = null;
                 var token = await client.Oauth.CreateAccessToken(
                     new OauthTokenRequest(clientId, clientSecret, code)
                     {
-                        RedirectUri = new Uri("http://localhost:58292/") 
+                        RedirectUri = new Uri("http://localhost:58292/")
                     });
                 Session["OAuthToken"] = token.AccessToken;
             }
@@ -41,8 +44,15 @@ namespace OctokitDemo.Controllers
             }
             catch (AuthorizationException)
             {
+                string csrf = Guid.NewGuid().ToString();
+                Session["CSRF:State"] = csrf;
+
                 // 1. Redirect users to request GitHub access
-                var request = new OauthLoginRequest("8b89b15af4ae1d408108") {Scopes = {"user", "notifications"}};
+                var request = new OauthLoginRequest("8b89b15af4ae1d408108")
+                {
+                    Scopes = {"user", "notifications"},
+                    State = csrf
+                };
                 var oauthLoginUrl = client.Oauth.GetGitHubLoginUrl(request);
                 return Redirect(oauthLoginUrl.ToString());
             }
