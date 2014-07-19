@@ -56,10 +56,7 @@ namespace OctokitDemo.Controllers
                 Session["CSRF:State"] = null;
 
                 var token = await client.Oauth.CreateAccessToken(
-                    new OauthTokenRequest(clientId, clientSecret, code)
-                    {
-                        RedirectUri = new Uri("http://localhost:58292/home/authorize")
-                    });
+                    new OauthTokenRequest(clientId, clientSecret, code));
                 Session["OAuthToken"] = token.AccessToken;
             }
 
