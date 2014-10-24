@@ -14,7 +14,7 @@ namespace OctokitDemo.Controllers
         const string clientId = "106002c37f27482617fb";
         private const string clientSecret = "66d5263cadd3bfe056dd46147154ba1eb2fe60b8";
         readonly GitHubClient client =
-            new GitHubClient(new ProductHeaderValue("Haack-GitHub-Oauth-Demo"), new Uri("https://github.com/"));
+            new GitHubClient(new ProductHeaderValue("Haack-GitHub-Oauth-Demo"));
 
         // This URL uses the GitHub API to get a list of the current user's
         // repositories which include public and private repositories.
@@ -56,10 +56,7 @@ namespace OctokitDemo.Controllers
                 Session["CSRF:State"] = null;
 
                 var token = await client.Oauth.CreateAccessToken(
-                    new OauthTokenRequest(clientId, clientSecret, code)
-                    {
-                        RedirectUri = new Uri("http://localhost:58292/home/authorize")
-                    });
+                    new OauthTokenRequest(clientId, clientSecret, code));
                 Session["OAuthToken"] = token.AccessToken;
             }
 
