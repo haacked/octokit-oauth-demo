@@ -80,7 +80,7 @@ namespace OctokitDemo.Controllers
 
         public async Task<ActionResult> Emojis()
         {
-            var emojis = await client.Miscellaneous.GetEmojis();
+            var emojis = await client.Miscellaneous.GetAllEmojis();
 
             return View(emojis);
         }
